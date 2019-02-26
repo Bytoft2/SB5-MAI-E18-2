@@ -26,7 +26,7 @@ import javax.swing.text.*;
  *
  * @author Werner Randelshofer  @version 1.0 2009-04-15 Created.
  */
-public class PaletteFormattedTextFieldUI extends BasicFormattedTextFieldUI {
+public class Changed extends BasicFormattedTextFieldUI {
 
     private Color errorIndicatorForeground;
 
@@ -91,7 +91,7 @@ public class PaletteFormattedTextFieldUI extends BasicFormattedTextFieldUI {
                         vis.setRangeProperties(value, extent, vis.getMinimum(),
                                 max, false);
                         if (hspan < bounds.width) {
-                            bounds = horizontalAlign(bounds, ((JTextField) c).getHorizontalAlignment(), hspan);
+                            bounds = horizontalAllign(bounds, field.getHorizontalAlignment(), hspan);
                         } else {
                             // adjust the allocation to match the bounded range.
                             bounds.width = hspan;
@@ -101,6 +101,42 @@ public class PaletteFormattedTextFieldUI extends BasicFormattedTextFieldUI {
                     return bounds;
                 }
                 return null;
+            }
+
+            //Vertical Adjustments
+            public Rectangle verticalAdjustments(Rectangle bounds, int vspan) {
+                if (bounds != null) {
+                    //Codeblock in statement could be shorter, if "slop" wasnt used.
+                    if (bounds.height != vspan) {
+                        bounds.y += (bounds.height - vspan) / 2;
+                        //sets height to be equal to vspan
+                        bounds.height = vspan;
+                    }
+                }
+                return bounds;
+            }
+
+            // horizontally align the interior
+            public Rectangle horizontalAllign(Rectangle bounds, int align, int hspan) {
+                if (bounds != null) {
+                    int slop = bounds.width - 1 - hspan;
+
+                    if (align == TRAILING) {
+                        align = RIGHT;
+                    }
+
+                    switch (align) {
+                        case SwingConstants.CENTER:
+                            bounds.x += slop / 2;
+                            bounds.width -= slop;
+                            break;
+                        case SwingConstants.RIGHT:
+                            bounds.x += slop;
+                            bounds.width -= slop;
+                            break;
+                    }
+                }
+                return bounds;
             }
 
             @Override
@@ -114,46 +150,6 @@ public class PaletteFormattedTextFieldUI extends BasicFormattedTextFieldUI {
                     g.draw(new Line2D.Float(r.x, r.y + r.height - 0.5f, r.x + r.width - 1, r.y + r.height - 0.5f));
                 }
                 super.paint(g, a);
-            }
-
-            public Rectangle verticalAdjustments(Rectangle bounds, int vspan) {
-                if (bounds.height != vspan) {
-                    int slop = bounds.height - vspan;
-                    bounds.y += slop / 2;
-                    bounds.height -= slop;
-                }
-                return bounds;
-            }
-
-            // horizontally align the interior
-            public Rectangle horizontalAlign(Rectangle bounds, int align, int hspan) {
-                int slop = bounds.width - 1 - hspan;
-
-                if (true /*((JComponent) c).isLeftToRight()*/) {
-                    if (align == LEADING) {
-                        align = LEFT;
-                    } else if (align == TRAILING) {
-                        align = RIGHT;
-                    }
-                } else {
-                    if (align == LEADING) {
-                        align = RIGHT;
-                    } else if (align == TRAILING) {
-                        align = LEFT;
-                    }
-                }
-
-                switch (align) {
-                    case SwingConstants.CENTER:
-                        bounds.x += slop / 2;
-                        bounds.width -= slop;
-                        break;
-                    case SwingConstants.RIGHT:
-                        bounds.x += slop;
-                        bounds.width -= slop;
-                        break;
-                }
-                return bounds;
             }
         };
     }
