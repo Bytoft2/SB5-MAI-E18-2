@@ -46,9 +46,10 @@ public class NewTest {
         System.out.println("verticalAdjustments");
         Rectangle bounds = new Rectangle(10, 10, 10, 30);
         int vspan = 10;
+        int y = bounds.y;
         New instance = new New();
         Rectangle result = instance.verticalAdjustments(bounds, vspan);
-        assertTrue(result.y > bounds.y && result.height == vspan);
+        assertTrue(result.y > y && result.height == vspan);
     }
 
     /**
@@ -59,9 +60,10 @@ public class NewTest {
         System.out.println("verticalAdjustments");
         Rectangle bounds = new Rectangle(10, 10, 10, 10);
         int vspan = 10;
+        Rectangle expResult = new Rectangle(10, 10, 10, 10);
         New instance = new New();
         Rectangle result = instance.verticalAdjustments(bounds, vspan);
-        assertEquals(bounds, result);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -85,9 +87,10 @@ public class NewTest {
         System.out.println("verticalAdjustments");
         Rectangle bounds = new Rectangle(10, 10, 10, 0);
         int vspan = 10;
+        int y = bounds.y;
         New instance = new New();
         Rectangle result = instance.verticalAdjustments(bounds, vspan);
-        assertTrue(result.height < 0 && result.y < bounds.y);
+        assertTrue(result.height == vspan && result.y < y);
     }
 
     /**
@@ -113,8 +116,8 @@ public class NewTest {
         Rectangle bounds = new Rectangle(10, 10, 10, 10);
         int align = 1;
         int hspan = 40;
+        Rectangle expResult = new Rectangle(10, 10, 10, 10);
         New instance = new New();
-        Rectangle expResult = null;
         Rectangle result = instance.horizontalAlign(bounds, align, hspan);
         assertEquals(expResult, result);
     }
@@ -123,14 +126,15 @@ public class NewTest {
      * Test of horizontalAlign method, of class New.
      */
     @Test
-    public void testHorizontalAlignWithalignOf10() {
+    public void testHorizontalAlignWithalignOf11() {
         System.out.println("horizontalAlign");
         Rectangle bounds = new Rectangle(10, 10, 10, 10);
-        int align = 2;
+        int align = 11;
         int hspan = 10;
+        Rectangle expResult = new Rectangle(10, 10, 10, 10);
         New instance = new New();
         Rectangle result = instance.horizontalAlign(bounds, align, hspan);
-        assertTrue(result.x < bounds.x && result.width == 1 + hspan);
+        assertTrue(result.x < expResult.x && result.width == 1 + hspan);
     }
 
     /**
@@ -142,9 +146,10 @@ public class NewTest {
         Rectangle bounds = new Rectangle(10, 10, 10, 10);
         int align = 0;
         int hspan = 10;
+        Rectangle expResult = new Rectangle(10, 10, 10, 10);
         New instance = new New();
         Rectangle result = instance.horizontalAlign(bounds, align, hspan);
-        assertTrue(result.x < bounds.x && result.width == 1 + hspan);
+        assertTrue(result.x == expResult.x && result.width == 1 + hspan);
     }
 
     /**
@@ -156,9 +161,10 @@ public class NewTest {
         Rectangle bounds = null;
         int align = 3;
         int hspan = 40;
+        Rectangle expResult = null;
         New instance = new New();
         Rectangle result = instance.horizontalAlign(bounds, align, hspan);
-        assertEquals(bounds, result);
+        assertEquals(expResult, result);
     }
 
 }
